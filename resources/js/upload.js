@@ -156,9 +156,8 @@ function rotateImage(e, id) {
         data: {img_url: img_url},
         url: '/image/rotate',
         success: function (response) {
-            if (response.status == "success") {
-                var newURL = updateQueryStringParameter(img_url, 't', Math.floor(Math.random() * 100000000));
-                img.attr('src', newURL);
+            if (response.status == 'success'){
+                img.attr('src', img_url);
             }
         }
     });
