@@ -209,6 +209,10 @@ class UploadController extends AdminController
         if ($isImageUser != null) {
             WaterMark::make(Storage::path('images/' . $filename))->rotate(90)
                 ->save(app_storage_path() . '/files-module/local/images/' . $filename);
+            WaterMark::make(Storage::path('images/md-' . $filename))->rotate(90)
+                ->resize(null, setting_value('visiosoft.module.advs::medium_image_height'), function ($constraint) {
+                    $constraint->aspectRatio();
+                })->save(app_storage_path() . '/files-module/local/images/md-' . $filename);
             return response()->json(['status' => 'success']);
         }
         return response()->json(['status' => 'error']);
