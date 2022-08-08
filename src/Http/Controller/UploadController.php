@@ -4,6 +4,7 @@ use Anomaly\Streams\Platform\Image\Image;
 use Anomaly\Streams\Platform\Model\Files\FilesFilesEntryModel;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Visiosoft\MediaFieldType\Table\UploadTableBuilder;
@@ -213,9 +214,10 @@ class UploadController extends AdminController
                 ->resize(null, setting_value('visiosoft.module.advs::medium_image_height'), function ($constraint) {
                     $constraint->aspectRatio();
                 })->save(app_storage_path() . '/files-module/local/images/md-' . $filename);
-            return response()->json(['status' => 'success']);
+            Artisan::call('cache:clear');
+            return response()->json(['status' => 200]);
         }
-        return response()->json(['status' => 'error']);
+        return response()->json(['status' => 500], 500);
     }
 
     public function createFile($folder, $filename, $image = null)
