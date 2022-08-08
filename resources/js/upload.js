@@ -155,10 +155,20 @@ function rotateImage(e, id) {
         dataType: "json",
         data: {img_url: img_url},
         url: '/image/rotate',
+        beforeSend: function () {
+            $(".upload-photos-wrapper").attr('style', 'opacity:.2;').append("<i class='fa fa-spinner fa-spin'></i>");
+        },
         success: function (response) {
-            if (response.status == 'success'){
+            if (response.status == 200) {
                 img.attr('src', img_url);
             }
+        },
+        error: function () {
+            Toast.fire(uploadErrorMsg, 'error');
+        },
+        complete: function () {
+            $(".upload-photos-wrapper").attr('style', 'opacity:1;');
+            $(".fa-spinner").remove();
         }
     });
 }
