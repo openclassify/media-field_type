@@ -162,11 +162,11 @@ function rotateImage(e, id) {
             if (response.status == 200) {
                 img.attr('src', img_url);
             }
-            $(".upload-photos-wrapper").attr('style', 'opacity:1;');
-            $(".fa-spinner").remove();
         },
         error: function () {
             Toast.fire(uploadErrorMsg, 'error');
+        },
+        complete: function () {
             $(".upload-photos-wrapper").attr('style', 'opacity:1;');
             $(".fa-spinner").remove();
         }
