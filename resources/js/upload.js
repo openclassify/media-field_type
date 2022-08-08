@@ -159,8 +159,11 @@ function rotateImage(e, id) {
             $(".upload-photos-wrapper").attr('style', 'opacity:.2;').append("<i class='fa fa-spinner fa-spin'></i>");
         },
         success: function (response) {
-            if (response.status == 200) {
-                img.attr('src', img_url);
+            if (response.status === 200) {
+                const date = new Date();
+                const timestampInSeconds = Math.floor(date.getTime() / 1000);
+                const newURL = updateQueryStringParameter(img_url, 't', timestampInSeconds);
+                img.attr('src', newURL);
             }
         },
         error: function () {
