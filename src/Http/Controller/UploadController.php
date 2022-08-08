@@ -193,11 +193,9 @@ class UploadController extends AdminController
             ->getTableContent();
     }
 
-    public function rotate(Image $image, Request $request)
+    public function rotate(Request $request)
     {
-        $request = $request->toArray();
         $url = $request['img_url'];
-
         $parsed = parse_url($url);
         $path = explode('/', $parsed['path']);
         $filename = end($path);
@@ -214,7 +212,10 @@ class UploadController extends AdminController
                 ->resize(null, setting_value('visiosoft.module.advs::medium_image_height'), function ($constraint) {
                     $constraint->aspectRatio();
                 })->save(app_storage_path() . '/files-module/local/images/md-' . $filename);
-            Artisan::call('cache:clear');
+
+            Artisan::call('httpcache:clear', []);
+            Artisan::call('assets:clear', []);
+
             return response()->json(['status' => 200]);
         }
         return response()->json(['status' => 500], 500);
